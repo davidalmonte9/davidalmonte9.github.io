@@ -7,7 +7,7 @@ Teacher preparation for the implementation of the Common Core State Standards (C
 
 #### Results
 
-![table-1 copy](https://user-images.githubusercontent.com/43073356/84319353-e44fa100-ab3d-11ea-89d1-4e56c6be2f5b.png)
+![table2](https://user-images.githubusercontent.com/43073356/84319483-1bbe4d80-ab3e-11ea-86fa-d2159fab5739.png)
 
 OLS multiple regression analysis of schoolwide survey response rates on year-to-year changes in student standardized test scores reveals statistically significant relationships for each of the 6 chosen measures of teacher preparedness (Table 1). Schools where all teachers dedicated collaborative planning time to CCSS Standards familiarization could expect scores to rise by an average 0.230 standard deviations (ß = 0.230, p < .001). Schools where teachers reported “Feeling strongly prepared to teach CCSS” saw improved test scores (ß = 0.228, p < .001). Teacher participation in professional learning communities was also associated with improved scores (ß = 0.189, p < .001). Negative predictors of student performance included the dedication of collaborative planning time to “curriculum adjustment” (ß = -0.330, p < .001), as well as the occurrence of CCSS content trainings (ß = -0.052, p < .001) and Job Embedded training on CCSS (ß = 0.088, p < .001), though, while both Content training and Job Embedded training are statistically significant, their effects are nominally minimal. CCSS Teacher preparedness metrics in the model explain only 1.35% of the total variation in test scores (R2 = 0.01348).
 
