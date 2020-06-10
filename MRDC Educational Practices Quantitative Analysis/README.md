@@ -1,6 +1,7 @@
 # MRDC Educational Practices Quantitative Analysis
 
-![](Summary Findings.pdf)
+![summaryFindings](https://user-images.githubusercontent.com/43073356/84318395-5f17bc80-ab3c-11ea-85bf-cf77edd1e513.png)
+
 
 Teacher preparation for the implementation of the Common Core State Standards (CCSS) has, to date, been the subject of relatively little research. This project builds one existing literature by using quantitative methods, including OLS multiple regression analysis, to identify the relationship between teacher preparation methods and gains in student performance on standardized tests. Results indicate that 1) teachers who perceive themselves to be more prepared for standards see greater year-to-year improvements in student test scores 2) collaborative planning time dedicated to familiarity with standards improves scores more than time dedicated to curriculum alignment and 3) teacher membership in professional learning communities may induce performance gains in students. Policymakers and administrators seeking to maximize student performance should thus consider these factors in future education policy discussions. 
 
