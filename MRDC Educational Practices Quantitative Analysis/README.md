@@ -14,10 +14,13 @@ All analysis files were created using R-Markdown within RStudo (version 1.2), an
 * Summary Findings.pdf - Presentation Slide. Discusses preliminary results and apparent correlations in data.
 * MRDC Math Standards Paper.pdf - APA formatted research paper. 
 * FOLDER: Original Data
-  * F
-* FOLDER: Analysis Data
+  * Questionnaire.pdf
+  * Documentation.pdf
+  * manifest.txt
+  * FOLDERS: DS0001-10 - Each folder contains an rda and the associated codebook. Each codebook contains summary statistics for responses to each of the relevant questionaires. 
+    * NOTE: This project only calls folders DS0001 (student standardized test performance)and DS0004 (teacher responses to a questionaire).
 * FOLDER: Command Files
-  * f
+  * 
 
 ##### Technical Requirements
 
