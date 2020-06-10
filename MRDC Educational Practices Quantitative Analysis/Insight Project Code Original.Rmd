@@ -1,0 +1,228 @@
+---
+title: "Insight Project Code"
+author: "David Almonte"
+date: "3/18/2019"
+output: html_document
+---
+
+##Import Libraries 
+```{r setup, include=FALSE}
+library(dplyr)
+library(writexl)
+library(ggplot2)
+```
+
+
+##Import Datasets
+```{r Loading }
+Students <- read.csv("37046-0001-Data.csv")
+Teachers <- read.csv("37046-0004-Data.csv")
+```
+
+
+```{r Summary Stats}
+# Provides Summary Statistics, including number of NA values for each analysis variable and the questionaire scale for each question.
+summary(Students$TSTSS) 
+summary(Teachers$TSQ39_15)
+summary(Teachers$TSQ40A_15)
+summary(Teachers$TSQ40B_15)
+summary(Teachers$TSQ40C_15)
+summary(Teachers$TSQ40D_15)
+summary(Teachers$TSQ40E_15)
+```
+
+```{r Filter Out NAs}
+# Re-Constructs dataframe excluding observations with no reported test score.
+Students <- Students %>%
+  filter(!is.na(TSTSS))
+
+# Re-Constructs dataframe excluding survey missing survey responses
+Teachers <- Teachers %>%
+  filter(!is.na(TSQ39_15),
+         !is.na(TSQ40A_15), 
+         !is.na(TSQ40B_15), 
+         !is.na(TSQ40C_15), 
+         !is.na(TSQ40D_15), 
+         !is.na(TSQ40E_15))
+
+# This could be cleaned up by 1) first creating the dataframe, as in the next chunk 2) piping "drop_na()" function. 
+```
+
+
+```{r Choosing Questionaire Values}
+# Creates a list of relevant variables, then subsets the dataframe.
+TeacherVars <- c("XSCHID", 
+                 "TREAT", 
+                 "TSQ39_15", 
+                 "TSQ40A_15", 
+                 "TSQ40B_15", 
+                 "TSQ40C_15", 
+                 "TSQ40D_15", 
+                 "TSQ40E_15")
+Teacher_Subset_01 <- Teachers[TeacherVars]
+```
+
+
+```{r Converting factors to Numerics}
+# Converts TSQ39_15 To Numeric from Factor. 1 indicatees a positive response.
+# This code is ugly, but sufficient.
+# Will be updated to create a mutated variable which takes the 
+Prep_Rating <- factor(Teacher_Subset_01$TSQ39_15, levels = c("0","1"))
+Prep_Rating[Teacher_Subset_01$TSQ39_15 == "(1) You feel extremely prepared"]<- "1"
+Prep_Rating[is.na(Prep_Rating)]<- 0
+Prep_Rating <- as.numeric(Prep_Rating)
+Prep_Rating[1:372] <- Prep_Rating - 1
+Teacher_Subset_01$TSQ39_15 <- Prep_Rating
+
+
+# A function to convert Yes/No survey questions to Numerics.
+selected_boolean <- function(varname){
+  x <- factor(varname, level = c(1,0))
+  x[varname == "(1) Selected"] <- 0
+  x[varname == "(0) NOT Selected"] <- 1
+  x <- as.numeric(x)
+  x[1:length(x)] <- x - 1 
+}
+
+selected_treatment <- function(varname){
+  x <- factor(varname, level = c(1,0))
+  x[varname == "(1) Treatment"] <- 0
+  x[varname == "(0) Control"] <- 1
+  x <- as.numeric(x)
+  x[1:length(x)] <- x - 1 
+}
+
+# Implementing the above function for eaech of the variables
+Teacher_Subset_01$TREAT <- selected_treatment(Teacher_Subset_01$TREAT)
+Teacher_Subset_01$TSQ40A_15 <- selected_boolean(Teacher_Subset_01$TSQ40A_15)
+Teacher_Subset_01$TSQ40B_15 <- selected_boolean(Teacher_Subset_01$TSQ40B_15)
+Teacher_Subset_01$TSQ40C_15 <- selected_boolean(Teacher_Subset_01$TSQ40C_15)
+Teacher_Subset_01$TSQ40D_15 <- selected_boolean(Teacher_Subset_01$TSQ40D_15)
+Teacher_Subset_01$TSQ40E_15 <- selected_boolean(Teacher_Subset_01$TSQ40E_15)
+```
+
+
+```{r Teacher Preparedness Index Approach A}
+# NOTE: This approach and variable is not reflected in our results. 
+# We construct an index of teacher preparedness using the sum of answers to questions from the teacher questionaire which measure preparedness.
+
+# Creates a variable that sums the responses to questions 
+Teacher_Subset_01 <- mutate(Teacher_Subset_01, Prepardness_Score = rowSums(Teacher_Subset_01[3:8]) - TSQ40D_15) # REMOVES QUESTION 40D, which refers to training for new teachers.
+
+# Finds the average school preparedness score for each school.
+Avg_School_Preparedness <- Teacher_Subset_01%>%
+  group_by(XSCHID)%>%
+  summarize(Average_Preparedness = mean(Prepardness_Score, na.rm=TRUE), 
+            TREAT = mean(TREAT, na.rm = TRUE),
+            TSQ39_15  = mean(TSQ39_15,  na.rm = TRUE),
+            TSQ40A_15 = mean(TSQ40A_15, na.rm = TRUE), 
+            TSQ40B_15 = mean(TSQ40B_15, na.rm = TRUE),
+            TSQ40C_15 = mean(TSQ40C_15, na.rm = TRUE),
+            TSQ40D_15 = mean(TSQ40D_15, na.rm = TRUE),
+            TSQ40E_15 = mean(TSQ40E_15, na.rm = TRUE)
+            )
+```
+
+
+```{r}
+# Computes the average schoolwide scores.
+Avg_School_Scores <- Students %>%
+  group_by(XSCHID)%>%
+  summarize(avg_test_score = mean(TSTSSTAND, na.rm = TRUE))
+
+# Merges Dataframes across schools
+School_Stats <- merge(Avg_School_Scores, Avg_School_Preparedness, by = "XSCHID", incomparables = NULL)
+```
+
+```{r School Level Linar Model, Total Preparedness (Aggregated)}
+# Conducts a linear regression to test the relationship betweeen school level average test scores and average preeparedneses. 
+yhat <- lm(avg_test_score ~ Average_Preparedness, data = School_Stats)
+summary(yhat)
+```
+
+```{r School Level Linar Model, Total Preparedness (Disagregated)}
+# Creates a linear regression to test the relationship betweeen average test scores and positive response rates to questionaire questions. School level.
+yhat <- lm(avg_test_score ~ TSQ39_15 + TSQ40A_15 + TSQ40B_15 + TSQ40C_15 + TSQ40D_15 + TSQ40E_15, data = School_Stats)
+summary(yhat)
+```
+
+
+```{r More Powerful Approach}
+# List of Variables from Student dataset which may be relevant control variables 
+StudentVars <- c("XSCHID", 
+                 "SPED",
+                 "TSTSSTAND",
+                 "TSTSSTAND_BL",
+                 "MALE",
+                 "BLACK",
+                 "HISPANIC",
+                 "WHITE",
+                 "ASIAN",
+                 "AGE",
+                 "ELL",
+                 "FRLUNCH",
+                 "GRADE",
+                 "COHORT1")
+
+# Creates a new dataset including only relevant questions
+Student_Subset_01 <- Students[StudentVars]
+Student_Subset_01 <- Student_Subset_01%>%
+  filter(!is.na(XSCHID),
+         !is.na(TSTSSTAND),
+         !is.na(TSTSSTAND_BL))
+
+# Each student is assigned their schoolwide teacher positive response rate for teacher questionaire responses
+Student_Subset_01 <- merge(Student_Subset_01, School_Stats, by.X=XSCHID)
+
+# Creates new dependant variable: the change in standadized test score after one year.
+# TSTSSTAND_BL: Baseline test scores, normalized, in standard deviations from mean.
+# TSTSSTAND: Test scores one year after baseline, in standard deviations from baseline score.
+# TSTSSTAND: Difference between baseline and original scores.
+Student_Subset_01 <- mutate(Student_Subset_01, TSTSSTAND_Delta = TSTSSTAND - TSTSSTAND_BL)
+
+summary(Student_Subset_01)
+```
+
+```{r}
+# A random sample of the student subset. 
+# Will be useful for plotting using GGPLOT.
+Student_Subset_02 <- sample_n(Student_Subset_01, 1500)
+```
+
+```{r Student Level Linaer with school mean preparedness}
+# A linear regression model using test scores and computed preparedness index
+yhat1 <- lm((TSTSSTAND_Delta) ~ Average_Preparedness , data = Student_Subset_01)
+summary(yhat1)
+```
+
+
+```{r Student Level Linaer with school mean preparedness}
+# A linear model using student level data and individual response questions to questionaire.
+yhat2 <- lm((TSTSSTAND_Delta) ~ TSQ39_15 + TSQ40A_15 + TSQ40B_15 + TSQ40C_15 + TSQ40D_15 + TSQ40E_15, data = Student_Subset_01)
+summary(yhat2)
+```
+
+
+```{r Graphing}
+ggplot(Student_Subset_02, aes(x=TSQ40B_15, y=(TSTSSTAND_Delta))) +
+  geom_point(size=0.1, shape= 23,  position =  position_jitter(w = 0.05, h = 0.), alpha =0.3)+
+  geom_smooth(method='lm')+
+  xlim(0, 1)+
+  ylim(-2, 2)
+
+ggplot(Student_Subset_02, aes(x=TSQ40A_15, y=(TSTSSTAND_Delta))) +
+  geom_point(size=0.1, shape= 23,  position =  position_jitter(w = 0.05, h = 0.17), alpha =0.3)+
+  geom_smooth(method='lm')+
+  xlim(0, 1)+
+  ylim(-2, 2)
+
+
+```
+
+```{r} 
+# Confidence intervals for the parameters from last regression. 
+confint(yhat2)
+```
+
+
+
