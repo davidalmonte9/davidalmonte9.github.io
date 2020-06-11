@@ -2,6 +2,7 @@
 
 ![summaryFindings](https://user-images.githubusercontent.com/43073356/84318395-5f17bc80-ab3c-11ea-85bf-cf77edd1e513.png)
 
+#### Abstract
 
 Teacher preparation for the implementation of the Common Core State Standards (CCSS) has, to date, been the subject of relatively little research. This project builds one existing literature by using quantitative methods, including OLS multiple regression analysis, to identify the relationship between teacher preparation methods and gains in student performance on standardized tests. Results indicate the following: 
 1. Teachers who perceive themselves to be more prepared for standards see greater year-to-year improvements in student test scores.
