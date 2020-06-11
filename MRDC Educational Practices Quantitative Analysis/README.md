@@ -11,7 +11,12 @@ Teacher preparation for the implementation of the Common Core State Standards (C
 
 #### Results
 
-\center ![table2](https://user-images.githubusercontent.com/43073356/84319483-1bbe4d80-ab3e-11ea-86fa-d2159fab5739.png) \center
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/43073356/84319483-1bbe4d80-ab3e-11ea-86fa-d2159fab5739.png"/>
+</p>
+
+
+![table2](https://user-images.githubusercontent.com/43073356/84319483-1bbe4d80-ab3e-11ea-86fa-d2159fab5739.png)
 
 OLS multiple regression analysis of schoolwide survey response rates on year-to-year changes in student standardized test scores reveals statistically significant relationships for each of the 6 chosen measures of teacher preparedness (Table 1). 
 
