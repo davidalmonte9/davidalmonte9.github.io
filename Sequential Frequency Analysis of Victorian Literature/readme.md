@@ -1,4 +1,4 @@
-# Sequential Frequency Analysis of Victorian Literature: 
+# Sequential Frequency Analysis of Victorian Literature 
 ### Wuthering Heights and Frankenstein, with Python
 David Almonte
 
