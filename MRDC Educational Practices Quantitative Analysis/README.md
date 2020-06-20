@@ -22,7 +22,7 @@ OLS multiple regression analysis of schoolwide survey response rates on year-to-
 * Teacher participation in professional learning communities was also associated with improved scores (ß = 0.189, p < .001).
 
 Negative predictors of student performance included the dedication of collaborative planning time to “curriculum adjustment” (ß = -0.330, p < .001), as well as the occurrence of CCSS content trainings (ß = -0.052, p < .001) and Job Embedded training on CCSS (ß = 0.088, p < .001). While both Content training and Job Embedded training are statistically significant, their effects are nominally minimal. CCSS Teacher preparedness metrics in the model explain only 1.35% of the total variation in test scores (R2 = 0.01348).
-#### Discussion
+### Discussion
 
 The positive correspondence between teacher perceptions of their preparedness for Common Core standards and student performance has multiple implications. First, there might be reason to anticipate increasing returns to CCSS implementation over time as teachers build familiarity with standards and instructional methods. As a corollary, evaluations of CCSS implementation conducted in the immediate aftermath of standards changes likely overrepresent underprepared teachers and should be discounted. Such a relationship may also have implications for the assignment of teachers to students: administrators who prioritize closing or reducing the education gap consider assigning underperforming and at-risk students to better prepared teachers. Lastly, this result gives credence to the idea that teacher self-reporting of their preparedness can be a useful predictor of their ability.
 
