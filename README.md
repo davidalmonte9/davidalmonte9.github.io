@@ -14,4 +14,4 @@ Thanks for stopping by! Feel free to take a look around at some of the projects 
 * Leverages cloud computing techniques, feature design in SQL and Pandas, machine learning methods, and multiple data sources to cluster taxi tipping practices into groups. Special discussion is reserved for the implications of the use of demography, geolocation information for business practice.
 
 #### Sequential Frequency Analysis of Victorian Literature - Frankenstien and Wuthering Heights
-* 
+* Scrapes text from gutenberg project, then implements a series of functions and classes to parse book specific character mention details.
